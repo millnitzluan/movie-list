@@ -24,6 +24,8 @@ class ListItem extends Component {
     this.onClick = this.onClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.renderModal = this.renderModal.bind(this);
+    this.renderCompany = this.renderCompany.bind(this);
+    this.renderCountry = this.renderCountry.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,17 +52,33 @@ class ListItem extends Component {
     this.setState({ show: true });
   }
 
+  renderCompany(companiesList){
+    return companiesList.map(company => {
+      return <li key={company.id}>{company.name}</li>;
+    });
+  }
+
+  renderCountry(countriesList){
+    return countriesList.map(country => {
+      return <li key={country.iso_3166_1}>{country.name}</li>;
+    });
+  }
+
   renderModal(data) {
     if(data) {
+      const titleTagline = <b>{ data.title } {data.tagline}</b>;
       const adult = <p>{ data.adult ? 'Yes' : 'No' }</p>;
-      const overview = <p>{data.overview}</p>
-      const originalLanguage = <p>{data.original_language}</p>
-      console.log(data);
+      const overview = <p>{data.overview}</p>;
+      const originalLanguage = <p>{data.original_language}</p>;
+      const productionCompany = <p>{data.production_companies}</p>;
+      const companiesList = this.renderCompany(data.production_companies);
+      const countriesList = this.renderCountry(data.production_countries);
+
       const posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`
       return (
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title><b>{ data.title } {data.tagline}</b></Modal.Title>
+            <Modal.Title>{titleTagline}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <label>Overview:</label>
@@ -69,7 +87,20 @@ class ListItem extends Component {
             <label>Adult:</label>
             {adult}
 
+            <label>Original Language:</label>
             {originalLanguage}
+
+            <label>Production Companies:</label>
+            <ul>
+              {companiesList}
+            </ul>
+
+            <label>Production Countries:</label>
+            <ul>
+              {countriesList}
+            </ul>
+
+            <label>Poster:</label>
             <img id="posterModal" src={posterPath}/>
           </Modal.Body>
           <Modal.Footer>
@@ -103,7 +134,7 @@ class ListItem extends Component {
             { this.state.show
                 ? this.renderModal(this.props.movieDetail.find(function(obj) { 
                   if(obj.id === state.id) return obj.id === state.id }))
-                : <div> </div>
+                : <div></div>
             }
           </td>
         </tr>
