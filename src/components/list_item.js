@@ -26,6 +26,7 @@ class ListItem extends Component {
     this.renderModal = this.renderModal.bind(this);
     this.renderCompany = this.renderCompany.bind(this);
     this.renderCountry = this.renderCountry.bind(this);
+    this.renderGenre = this.renderGenre.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,6 +59,12 @@ class ListItem extends Component {
     });
   }
 
+  renderGenre(genresList) {
+    return genresList.map(genre => {
+      return <li key={genre.id}>{genre.name}</li>;
+    });
+  }
+
   renderCountry(countriesList){
     return countriesList.map(country => {
       return <li key={country.iso_3166_1}>{country.name}</li>;
@@ -73,8 +80,9 @@ class ListItem extends Component {
       const productionCompany = <p>{data.production_companies}</p>;
       const companiesList = this.renderCompany(data.production_companies);
       const countriesList = this.renderCountry(data.production_countries);
+      const genresList = this.renderGenre(data.genres);
+      const posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
 
-      const posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`
       return (
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
@@ -86,6 +94,9 @@ class ListItem extends Component {
 
             <label>Adult:</label>
             {adult}
+
+            <label>Genres:</label>
+            {genresList}
 
             <label>Original Language:</label>
             {originalLanguage}
