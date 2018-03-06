@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Simple movie wrapper",
   "main": "index.js",
-  "repository": "https://github.com/luanmillnitz/movie-list.git",
+  "repository": "https://github.com/millnitzluan/movie-list.git",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
